@@ -118,17 +118,12 @@ def lognormal_delay_generation(key: jnp.array, sim_params: SimArgs,
 
 def uniform_delay_generation(key: jnp.array, sim_params: SimArgs) \
         -> (jnp.array, jnp.array):
-    print(f'UNIFORM: generating discrete delays independently of R and C')
     key, subkey = jax.random.split(key)
     discrete_delays = (
         jax.random.randint(subkey, (sim_params.n_out,
                                     sim_params.n_in*sim_params.n_delays),
                            minval=0,
                            maxval=sim_params.max_delay + 1))
-    print(f'mean_delay = {jnp.mean(discrete_delays)}')
-    print(f'std_delay = {jnp.std(discrete_delays)}')
-    print(f'min_delay = {jnp.min(discrete_delays)}')
-    print(f'max_delay = {jnp.max(discrete_delays)}')
     return key, discrete_delays
 
 
@@ -140,40 +135,6 @@ def pattern_delay_generation(sim_params: SimArgs) -> jnp.array:
     ).astype(jnp.uint8)
     return jnp.tile(delays, (sim_params.n_out, sim_params.n_in))
 
-
-def normal_delay_generation(key: jnp.array, sim_params: SimArgs) \
-        -> (jnp.array, jnp.array):
-    print(f'NORMAL: generating discrete delays independently of R and C')
-    key, subkey = jax.random.split(key)
-    continuous_delays = (
-        jax.random.normal(subkey,
-                          (sim_params.n_out,
-                           sim_params.n_in*sim_params.n_delays)
-                          )
-    )
-    mu = sim_params.r_mu_lognormal * sim_params.cap
-    print(f'ABSOLUTE STD: {sim_params.r_std_absolute}')
-    std = sim_params.r_std_normal if sim_params.r_std_absolute \
-        else mu * sim_params.r_std_factor
-    continuous_delays = continuous_delays * std + mu
-    print(f'mean_delay = {jnp.mean(continuous_delays)}')
-    print(f'std_delay = {jnp.std(continuous_delays)}')
-    print(f'min_delay = {jnp.min(continuous_delays)}')
-    print(f'max_delay = {jnp.max(continuous_delays)}')
-    discrete_delays = jnp.round(continuous_delays * (1 / sim_params.timestep))
-    print(f'mean_delay = {jnp.mean(discrete_delays)}')
-    print(f'std_delay = {jnp.std(discrete_delays)}')
-    print(f'min_delay = {jnp.min(discrete_delays)}')
-    print(f'max_delay = {jnp.max(discrete_delays)}')
-    print(f'NORMAL: clipping delays [0, {sim_params.max_delay}]')
-    print(f'Negative delays: '
-          f'{jnp.count_nonzero(discrete_delays < 0) / discrete_delays.size}')
-    discrete_delays = jnp.clip(discrete_delays, 0, sim_params.max_delay)
-    print(f'Clipped-Discrete delays mean {jnp.mean(discrete_delays)}')
-    print(f'Clipped-Discrete delays std {jnp.std(discrete_delays)}')
-    return key, discrete_delays
-
-
 def delay_generation(key: jnp.array, sim_params: SimArgs, path_to_save: str,
                      visualize_plot: bool = False) -> (jnp.array, jnp.array):
     if sim_params.delay_distribution == 'lognormal':
@@ -183,8 +144,6 @@ def delay_generation(key: jnp.array, sim_params: SimArgs, path_to_save: str,
         key, delays = uniform_delay_generation(key, sim_params)
     elif sim_params.delay_distribution == 'pattern':
         delays = pattern_delay_generation(sim_params)
-    elif sim_params.delay_distribution == 'normal':
-        delays =  normal_delay_generation(key, sim_params)
     else:
         raise ValueError(f'Unknown delay distribution '
                          f'{sim_params.delay_distribution}')

@@ -19,12 +19,12 @@ def plot(df256, df700):
     noise = noise.astype(int)
 
     fig, ax = plt.subplots(1, 1, figsize=fig_size)
-    ax.errorbar(noise, df700['best_val_test_acc_mean']*100,
-                yerr=df700['best_val_test_acc_std']*100,
+    ax.errorbar(noise, df700['test_acc_mean']*100,
+                yerr=df700['test_acc_std']*100,
                 fmt='o-', color='tab:green', label='D1: 700 in, 16 delays',
                 capsize=5, capthick=2)
-    ax.errorbar(noise, df256['best_val_test_acc_mean']*100,
-                yerr=df256['best_val_test_acc_std']*100,
+    ax.errorbar(noise, df256['test_acc_mean']*100,
+                yerr=df256['test_acc_std']*100,
                 fmt='o-', color='tab:olive', label='D2: 256 in, 16 delays',
                 capsize=5, capthick=2)
     ax.set_xlabel('Noise (% of max{|W|})', size=xy_label_fontsize)
@@ -36,8 +36,10 @@ def plot(df256, df700):
     ax.legend(loc='lower left', fontsize=legend_fontsize, frameon=False, ncol=1)
     ax.grid(linestyle='-', linewidth=grid_line_width, alpha=0.5)
     plt.tight_layout()
-    plt.savefig('acc_vs_noise.pdf', format='pdf', transparent=True)
-    plt.savefig('acc_vs_noise.jpg', format='jpg', transparent=True)
+    plt.savefig('../simulations/acc_vs_noise.jpg', format='jpg',
+                transparent=True)
+    # print save path
+    print('Figure saved at: simulations/acc_vs_noise.jpg')
     plt.show()
 
 
