@@ -22,8 +22,8 @@ this directory as `results.csv` and `fig4d_D1andD2.jpg`.
   - `simulations/`: directory containing the simulation results including
     - for each model, refered with a unique id containing the parameters
     (eg. `700_16_bnil0_lr2e-4_maxD200_log600e9_std4e-1_tm20e-3`):
-      - trained weights
-      - associated random delays
+      - trained weights: `w_42.npy` (for seed 42)
+      - associated random delays: `d_42.npy` (for seed 42)
     - `results.csv`: file containing the simulation results of all runs
 
 ## Installation Instructions
@@ -82,6 +82,7 @@ chmod a+x reproduce_fig4d_D1andD2_training.sh
 Simulation 1 / 30
 
 Training
+
 Simulation parameters:
         timestep = 0.005
         tau_mem = 0.015
@@ -94,6 +95,7 @@ Simulation parameters:
 
 folder created: ../simulations
 folder created: ../simulations/256_16_bnil0_lr2e-4_maxD200_log500e9_std4e-1_tm15e-3/hw_aware
+
 discrete delays
  - mean 99.15 timesteps (496 ms)
  - saved at ../simulations/256_16_bnil0_lr2e-4_maxD200_log500e9_std4e-1_tm15e-3/hw_aware/d_42.npy
@@ -121,11 +123,13 @@ epoch  | mean_train_loss | mean_train_acc  | mean_val_acc    | mean_test_acc   |
 30     | 0.4453          | 0.9403          | 0.8662          | 0.8621          | 6.79
 37     | 0.4012          | 0.9530          | 0.8750          | 0.8629          | 6.78
 40     | 0.3962          | 0.9541          | 0.8744          |                 | 6.78
-Early stopping
+Early stopping at epoch 62
+
 epoch  | best_val_train_acc | best_val_acc    | best_val_test_acc
 37     | 0.9530             | 0.8750          | 0.8629
+
 weights: saved at simulations/256_16_bnil0_lr2e-4_maxD200_log500e9_std4e-1_tm15e-3/hw_aware/w_42.npy
-results saved to: simulations/results.csv
+results: saved at simulations/results.csv
 
 ```
 - Expected plot 

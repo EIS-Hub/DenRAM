@@ -147,7 +147,7 @@ def delay_generation(key: jnp.array, sim_params: SimArgs, path_to_save: str,
     else:
         raise ValueError(f'Unknown delay distribution '
                          f'{sim_params.delay_distribution}')
-    print(f'discrete delays\n'
+    print(f'\ndiscrete delays\n'
           f' - mean {jnp.mean(delays):.2f} timesteps '
           f'({jnp.mean(delays)*sim_params.timestep*1000:.0f} ms)')
     path_to_save_delays = os.path.join(path_to_save,

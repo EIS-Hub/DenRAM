@@ -4,8 +4,6 @@ import argparse
 import hyperparameters
 from training import train
 
-np.set_printoptions(threshold=100000000)
-
 
 if __name__ == '__main__':
     # recover parsed arguments
@@ -23,6 +21,5 @@ if __name__ == '__main__':
         args.n_in, args.n_delays, args.seed, args.r_mu, args.r_std,
         args.tau_mem, args.noise_std, args.nb_epochs
     )
-    print('Training')
+    print('\nTraining')
     train(sim_params)
-

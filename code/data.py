@@ -271,7 +271,7 @@ def custom_collate_fn(batch):
 
 def get_data_loaders(sim_params):
     cache_dir = os.getcwd()
-    print(f'datasets:')
+    print(f'\ndatasets:')
     train_ds, test_ds = get_numpy_datasets(
         'shd', sim_params.n_in, cache_dir=cache_dir, download=True,
         timestep=sim_params.timestep, truncation=sim_params.truncation)

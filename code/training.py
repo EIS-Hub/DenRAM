@@ -11,7 +11,6 @@ from utils_training import run_epoch
 
 jnp.set_printoptions(formatter={'float': lambda x: f'{x:.2f}'})
 
-
 def train(args: SimArgs):
     key = jax.random.PRNGKey(args.seed)
     utils.log_params(args)
@@ -40,7 +39,7 @@ def train(args: SimArgs):
     opt_init, opt_update, get_params = optimizers.adam(step_size=piecewise_lr)
     opt_state = opt_init(biased_w)
 
-    print(f'Training with noise: {args.noise_std}')
+    print(f'\nTraining with noise: {args.noise_std}')
     print(f'{"epoch" : <6} | '
           f'{"mean_train_loss" : <15} | '
           f'{"mean_train_acc" : <15} | '
@@ -75,7 +74,7 @@ def train(args: SimArgs):
                           f'{"":<15} | '
                           f'{time_epoch - epoch_start:.2f}')
                 if patience == max_patience:
-                    print('Early stopping')
+                    print(f'Early stopping at epoch: {e}')
                     break
             else:
                 best_epoch_id = e
@@ -106,7 +105,7 @@ def train(args: SimArgs):
                       f'{time_epoch - epoch_start:.2f}')
             patience += 1
             if patience == max_patience:
-                print('Early stopping')
+                print(f'Early stopping at epoch: {e}')
                 break
 
     key_test = jax.random.PRNGKey(0)
@@ -114,7 +113,7 @@ def train(args: SimArgs):
         run_epoch(key_test, test_loader, hyperparams, args,
                   biased_delays, opt_state_best, get_params)
     )
-    print(f'{"epoch":<6} | '
+    print(f'\n{"epoch":<6} | '
           f'{"best_val_train_acc":<18} | '
           f'{"best_val_acc":<15} | '
           f'{"best_val_test_acc":<15}')
@@ -123,7 +122,7 @@ def train(args: SimArgs):
           f'{best_val_acc:.4f}{"":<9} | '
           f'{test_acc:.4f}')
 
-    print(f'weights: saved at {path_to_save_weights}')
+    print(f'\nweights: saved at {path_to_save_weights}')
 
     # check if results.csv exists and create it if not
     csv_path = os.path.join('../simulations', 'results.csv')
