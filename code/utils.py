@@ -9,7 +9,6 @@ def log_params(sim_params):
     print(f'\tlr = {sim_params.lr}')
     print(f'\tdelay_distribution = {sim_params.delay_distribution}')
     if sim_params.delay_distribution == 'lognormal':
-        # add to the line "clipping"
         print(f'\t--> clipping delays to max_delay = {sim_params.max_delay}')
     print(f'\tr_mu = {sim_params.r_mu_lognormal}')
     print(f'\tr_std = {sim_params.r_std_normal}')

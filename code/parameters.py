@@ -151,7 +151,7 @@ def delay_generation(key: jnp.array, sim_params: SimArgs, path_to_save: str,
           f' - mean {jnp.mean(delays):.2f} timesteps '
           f'({jnp.mean(delays)*sim_params.timestep*1000:.0f} ms)')
     path_to_save_delays = os.path.join(path_to_save,
-                                       f'dd_{sim_params.seed}.npy')
+                                       f'd_{sim_params.seed}.npy')
     jnp.save(path_to_save_delays, delays)
     print(f' - saved at {path_to_save_delays}')
     return key, delays

@@ -46,7 +46,7 @@ def train(args: SimArgs):
           f'{"mean_train_acc" : <15} | '
           f'{"mean_val_acc" : <15} | '
           f'{"mean_test_acc" : <15} | '
-          f'{"epoch_duration": <15}')
+          f'{"epoch_duration (s)": <15}')
 
     best_val_acc = 0.00001;
     max_patience = 25;
@@ -67,6 +67,13 @@ def train(args: SimArgs):
         if val_acc > best_val_acc:
             if (val_acc - best_val_acc) / best_val_acc < 0.01:
                 patience += 1
+                if e % 10 == 0:
+                    print(f'{e:<6} | '
+                          f'{train_loss:.4f}{"":<9} | '
+                          f'{train_acc:.4f}{"":<9} | '
+                          f'{val_acc:.4f}{"":<9} | '
+                          f'{"":<15} | '
+                          f'{time_epoch - epoch_start:.2f}')
                 if patience == max_patience:
                     print('Early stopping')
                     break
@@ -108,11 +115,11 @@ def train(args: SimArgs):
                   biased_delays, opt_state_best, get_params)
     )
     print(f'{"epoch":<6} | '
-          f'{"best_val_train_acc":<15} | '
+          f'{"best_val_train_acc":<18} | '
           f'{"best_val_acc":<15} | '
           f'{"best_val_test_acc":<15}')
     print(f'{best_epoch_id:<6} | '
-          f'{best_val_train_acc:.4f}{"":<9} | '
+          f'{best_val_train_acc:.4f}{"":<12} | '
           f'{best_val_acc:.4f}{"":<9} | '
           f'{test_acc:.4f}')
 
@@ -122,10 +129,12 @@ def train(args: SimArgs):
     csv_path = os.path.join('../simulations', 'results.csv')
     if not os.path.isfile(csv_path):
         with open(csv_path, 'w') as f:
-            f.write('n_in,n_delays,noise_std,seed,max_delay,tau_mem,r_mu,r_std,test_acc\n')
+            f.write('n_in,n_delays,noise_std,max_delay,tau_mem,r_mu,r_std,'
+                    'seed,test_acc\n')
     # write results to csv
     with open(csv_path, 'a') as f:
-        f.write(f'{args.n_in},{args.n_delays},{args.noise_std},{args.seed},'
-                f'{args.max_delay},{args.tau_mem},{args.r_mu_lognormal},'
-                f'{args.r_std_normal},{test_acc}\n')
-    print(f'results saved to: {csv_path}')
+        f.write(f'{args.n_in},{args.n_delays},{args.noise_std:.2f},'
+                f'{args.max_delay},{args.tau_mem:.3f},'
+                f'{int(args.r_mu_lognormal)},{args.r_std_normal},'
+                f'{args.seed},{test_acc:.4f}\n')
+    print(f'results: saved at {csv_path}')

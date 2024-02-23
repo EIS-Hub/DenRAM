@@ -1,6 +1,7 @@
 class SimArgs:
     def __init__(self, n_in: int, n_delays: int, seed: int, r_mu: float,
-                 r_std: float, tau_mem: float, noise_std: float):
+                 r_std: float, tau_mem: float, noise_std: float,
+                 nb_epochs: int):
         # archi
         self.n_in = n_in  # number of input channels
         self.n_out = 20
@@ -24,6 +25,6 @@ class SimArgs:
         self.truncation = True  # to use only 150 instead of 280 timesteps
         # training
         self.lr = 0.0002
-        self.nb_epochs = 100
+        self.nb_epochs = nb_epochs
         self.batch_size = 64
         self.seed = seed

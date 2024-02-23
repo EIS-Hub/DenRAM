@@ -36,10 +36,10 @@ def plot(df256, df700):
     ax.legend(loc='lower left', fontsize=legend_fontsize, frameon=False, ncol=1)
     ax.grid(linestyle='-', linewidth=grid_line_width, alpha=0.5)
     plt.tight_layout()
-    plt.savefig('../simulations/acc_vs_noise.jpg', format='jpg',
-                transparent=True)
+    plt.savefig('../reproduction/fig4d_D1andD2.jpg', format='jpg',
+                transparent=True, dpi=300)
     # print save path
-    print('Figure saved at: simulations/acc_vs_noise.jpg')
+    print('Figure saved at: reproduction/fig4d_D1andD2.jpg')
     plt.show()
 
 
@@ -52,8 +52,8 @@ def recover_mean_and_std_vs_noise_std(df, n_in):
     return df
 
 
-def generate_figure():
-    df = pd.read_csv('../simulations/results.csv')
+def generate_figure(path):
+    df = pd.read_csv(path)
     df256 = recover_mean_and_std_vs_noise_std(df, 256)
     df700 = recover_mean_and_std_vs_noise_std(df, 700)
     # assert that they have the same number of noise levels
@@ -70,4 +70,4 @@ def generate_figure():
 
 
 if __name__ == '__main__':
-    generate_figure()
+    generate_figure('../reproduction/results.csv')

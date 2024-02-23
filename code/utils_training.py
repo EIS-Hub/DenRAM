@@ -9,8 +9,6 @@ def lif_delay_forward(state, input_spikes):
         [jax.lax.expand_dims(input_spikes, (0,)), delay_buffer[:-1,:]],
         0
     )
-    # next line is really cumbersome due to jax
-    # (dimensions cannot use n_in and n_delays parameter)
     delayed_input = delay_buffer[
         delays.astype(jnp.int32),
         jnp.append(
@@ -132,7 +130,6 @@ def run_epoch(key, loader, hyperparams, sim_params, biased_delays,
                                     hyperparams, batch_labels, subkey_noise)
         local_loss.append(loss)
         local_acc.append(acc)
-        break
     mean_local_loss = jnp.mean(jnp.array(local_loss))
     mean_local_acc = jnp.mean(jnp.array(local_acc))
     return key, opt_state, mean_local_loss, mean_local_acc
